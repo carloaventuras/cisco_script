@@ -1,0 +1,130 @@
+******************GENERAL**CONFIG*******************
+
+***input: no
+
+
+en
+conf t
+no ip http server
+no ip http secure-server
+username admin secret P@ssw0rd
+enable secret P@ssw0rd
+aaa new-model
+ip domain name test.com
+crypto key generate rsa
+
+***input: 2048
+
+ip ssh authentication-retries 5
+ip ssh version 2
+line vty 0 15
+ password login local
+ transport input ssh
+ transport output ssh
+!
+interface GigabitEthernet4
+ description *** COPPER NETWORK CONNECTED ***
+ switchport mode trunk
+ switchport nonegotiate
+ no ip address
+!
+service password-encryption
+no service dhcp
+no aaa new-model
+!
+service-module wlan-ap 0 bootimage autonomous
+!
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+username admin privilege 15 password 7 073F015F5D1E491713
+username monitor privilege 7 secret 5 $1$j4F6$3jtrJR8Bcut/021odMto//
+!
+track 1 ip sla 1 reachability
+ delay down 5 up 5
+!
+track 2 ip sla 2 reachability
+ delay down 5 up 5
+!
+track 3 list boolean or
+ object 1
+ object 2
+!
+interface Loopback0
+ no ip address
+!
+interface GigabitEthernet0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1
+ description *** DEV-1 ***
+ switchport access vlan 73
+ switchport mode access
+ switchport nonegotiate
+ no ip address
+ power inline never
+ spanning-tree portfast
+!
+interface GigabitEthernet2
+ description *** DEV-2 ***
+ switchport access vlan 73
+ switchport mode access
+ switchport nonegotiate
+ no ip address
+ spanning-tree portfast
+!
+interface GigabitEthernet3
+ description *** IP PHONE ***
+ switchport access vlan 73
+ switchport mode access
+ switchport nonegotiate
+ no ip address
+ power inline port max 30000
+ spanning-tree portfast
+!
+interface GigabitEthernet4
+ description *** COPPER NETWORK  ***
+ switchport mode trunk
+ switchport nonegotiate
+ no ip address
+!
+interface Wlan-GigabitEthernet0
+ no ip address
+!
+interface Cellular0/1
+ no ip address
+ encapsulation slip
+!
+interface Cellular1/1
+ no ip address
+ encapsulation slip
+!
+interface Async0
+ no ip address
+ encapsulation scada
+!
+interface Async1
+ no ip address
+ encapsulation scada
+!
+interface Dialer1
+ no ip address
+!
+ip forward-protocol nd
+!
+!
+snmp-server user fred2015 DEV-1
+snmp-server group EDEV-1noauth 
+snmp-server community fred2015 RO
+!
+control-plane
+!
+!
+banner exec ^CC *** THIS SYSTEM IS PRIVATE PROPERTY  *** ^C
+banner motd ^CC ***UNAUTHORIZED ACCESS PROHIBITED AUTHORIZED ACCESS ONLY*** ^C
+!         
+end
+wr

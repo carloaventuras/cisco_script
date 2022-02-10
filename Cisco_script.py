@@ -30,7 +30,7 @@ with open('C:\\Users\\user_name\\cisco_script\\my_ip.csv', 'r') as read_obj:
         general = general_file.read()
         
         #Write console out with all code to path
-        path = ('C:\\Users\\user_name\\cisco_script\\Batch_1\\') + ( str(Fa) + '_' + 'Id' +str(Id) + '-IR829.txt')
+        path = ('C:\\Users\\user_name\\cisco_script\\Batch_1\\') + (str(Fa) + '_' + 'Id' +str(Id) + '.txt')
         sys.stdout = open(path, 'w')
         
         #General config
